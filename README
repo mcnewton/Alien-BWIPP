@@ -11,17 +11,17 @@ README - basic information for users prior to downloading
 
 =head2 system-wide installation
 
-    perl Makefile.PL
-    make
-    make test
-    sudo make install
+    perl Build.PL
+    ./Build
+    ./Build test
+    sudo ./Build install
 
 =head2 installation in a private directory
 
-    perl Makefile.PL INSTALL_BASE=~/modules_prefix
-    make
-    make test
-    make install
+    perl Build.PL --install_base ~/modules_prefix
+    ./Build
+    ./Build test
+    ./Build install
 
 Do not forget to add F<$HOME/modules_prefix/lib/perl5> to your C<@INC>, see
 L<perlfaq8/"How do I add a directory to my include path (@INC) at runtime?">.
