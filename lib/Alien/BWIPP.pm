@@ -43,10 +43,7 @@ sub _build__chunks {
                     $block_name = 'LICENCE';
                     continue;
                 }
-                when (/\A% --BEGIN PREAMBLE--/) {
-                    $block_name = 'PREAMBLE';
-                }
-                when (/\A %[ ]--BEGIN[ ](?<type>(?:RENDER|ENCOD)ER)[ ](?<name>\w+)--/msx) {
+                when (/\A %[ ]--BEGIN[ ](?<type>(?:RENDERER|ENCODER|RESOURCE))[ ](?<name>\w+)--/msx) {
                     $block_type = $LAST_PAREN_MATCH{type} if $LAST_PAREN_MATCH{type};
                     $block_name = $LAST_PAREN_MATCH{name} if $LAST_PAREN_MATCH{name};
                 }
@@ -56,7 +53,7 @@ sub _build__chunks {
                     (?:--)? \n \z/msx
                 ) {
                     unless ($LAST_PAREN_MATCH{feature_name} ~~ [qw(BEGIN END)]) {
-                        $chunks{ENCODER}{$block_name}{$LAST_PAREN_MATCH{feature_name}}
+                        $chunks{$block_type}{$block_name}{$LAST_PAREN_MATCH{feature_name}}
                           = $LAST_PAREN_MATCH{feature_value};
                     }
                 }
@@ -79,15 +76,15 @@ sub create_classes {
     my @meta_classes;
     my %chunks = %{$self->_chunks};
     for my $encoder (@{$self->_encoders}) {
-        my $prepended = $chunks{HEADER}{LICENCE}{post_script_source_code}
-          . $chunks{HEADER}{PREAMBLE}{post_script_source_code};
-        for my $renderer (split q{ }, $chunks{ENCODER}{$encoder}{RNDR}) {
-            $prepended .= $chunks{RENDERER}{$renderer}{post_script_source_code};
-        }
+        my $prepended = $chunks{HEADER}{LICENCE}{post_script_source_code};
         for my $dependency_type (qw(REQUIRES SUGGESTS)) {
             if (exists $chunks{ENCODER}{$encoder}{$dependency_type}) {
                 for my $dependency (split q{ }, $chunks{ENCODER}{$encoder}{$dependency_type}) {
-                    $prepended .= $chunks{ENCODER}{$dependency}{post_script_source_code};
+                    for my $resource_type (qw(RENDERER ENCODER RESOURCE)) {
+                        if (exists $chunks{$resource_type}{$dependency}{post_script_source_code}) {
+                            $prepended .= $chunks{$resource_type}{$dependency}{post_script_source_code};
+                        }
+                    }
                 }
             }
         }
@@ -128,7 +125,7 @@ Alien::BWIPP - Barcode Writer in Pure PostScript
 =head1 VERSION
 
 This document describes C<Alien::BWIPP> version C<0.006>. It is based on
-I<Barcode Writer in Pure PostScript> version C<2010-06-20>.
+I<Barcode Writer in Pure PostScript> version C<2014-06-30-1>.
 
 
 =head1 SYNOPSIS
@@ -265,9 +262,9 @@ See file F<AUTHORS>.
 
 =head2 F<barcode.ps>
 
-Barcode Writer in Pure PostScript - Version 2010-06-20
+Barcode Writer in Pure PostScript - Version 2014-06-30-1
 
-Copyright © 2004-2010 Terry Burton C<< <tez@terryburton.co.uk> >>
+Copyright © 2004-2014 Terry Burton C<< <tez@terryburton.co.uk> >>
 
 Permission is hereby granted, free of charge, to any
 person obtaining a copy of this software and associated
@@ -303,5 +300,5 @@ Distributable under the same licence.
 
 =head1 SEE ALSO
 
-homepage L<http://www.terryburton.co.uk/barcodewriter/>,
-manual L<http://groups.google.com/group/postscriptbarcode/web>
+homepage L<http://bwipp.terryburton.co.uk/>,
+manual L<https://github.com/bwipp/postscriptbarcode/wiki>
