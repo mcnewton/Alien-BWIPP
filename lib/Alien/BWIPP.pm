@@ -38,28 +38,26 @@ sub _build__chunks {
         while (defined(my $line = $self->barcode_source_handle->getline)) {
             state $block_type = 'HEADER';
             state $block_name;
-            given ($line) {
-                when (/\A% Barcode Writer in Pure PostScript - Version/) {
-                    $block_name = 'LICENCE';
-                    continue;
+
+            if ($line =~ /\A% Barcode Writer in Pure PostScript - Version/) {
+                $block_name = 'LICENCE';
+            }
+
+            if ($line =~ /\A %[ ]--BEGIN[ ](?<type>(?:RENDERER|ENCODER|RESOURCE))[ ](?<name>\w+)--/msx) {
+                $block_type = $LAST_PAREN_MATCH{type} if $LAST_PAREN_MATCH{type};
+                $block_name = $LAST_PAREN_MATCH{name} if $LAST_PAREN_MATCH{name};
+            }
+            elsif ($line =~ /\A % [ ] --
+                             (?<feature_name>\w+) :? [ ]?
+                             (?<feature_value>.*?)
+                             (?:--)? \n \z/msx) {
+                unless ($LAST_PAREN_MATCH{feature_name} =~ /^(?:BEGIN|END)$/) {
+                    $chunks{$block_type}{$block_name}{$LAST_PAREN_MATCH{feature_name}}
+                      = $LAST_PAREN_MATCH{feature_value};
                 }
-                when (/\A %[ ]--BEGIN[ ](?<type>(?:RENDERER|ENCODER|RESOURCE))[ ](?<name>\w+)--/msx) {
-                    $block_type = $LAST_PAREN_MATCH{type} if $LAST_PAREN_MATCH{type};
-                    $block_name = $LAST_PAREN_MATCH{name} if $LAST_PAREN_MATCH{name};
-                }
-                when (/\A % [ ] --
-                    (?<feature_name>\w+) :? [ ]?
-                    (?<feature_value>.*?)
-                    (?:--)? \n \z/msx
-                ) {
-                    unless ($LAST_PAREN_MATCH{feature_name} ~~ [qw(BEGIN END)]) {
-                        $chunks{$block_type}{$block_name}{$LAST_PAREN_MATCH{feature_name}}
-                          = $LAST_PAREN_MATCH{feature_value};
-                    }
-                }
-                default {
-                    $chunks{$block_type}{$block_name}{post_script_source_code} .= $line if $block_name;
-                }
+            }
+            else {
+                $chunks{$block_type}{$block_name}{post_script_source_code} .= $line if $block_name;
             }
         }
     }
