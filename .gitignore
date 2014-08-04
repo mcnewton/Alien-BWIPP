@@ -34,7 +34,6 @@ build.com
 cover_db
 covered
 inc/Module/Install*
-MANIFEST*
 META.yml
 MYMETA.yml
 SIGNATURE
