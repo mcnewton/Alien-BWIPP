@@ -235,7 +235,7 @@ None reported.
 No bugs have been reported.
 
 Please report any bugs or feature requests to
-L<http://github.com/daxim/Alien-BWIPP/issues>,
+L<http://github.com/mcnewton/Alien-BWIPP/issues>,
 or send an email to the maintainer.
 
 
@@ -248,9 +248,13 @@ Suggest more future plans by L<filing a bug|/"BUGS AND LIMITATIONS">.
 
 =head1 AUTHOR
 
-=head2 Distribution maintainer
+=head2 Original author
 
 Lars Dɪᴇᴄᴋᴏᴡ C<< <daxim@cpan.org> >>
+
+=head2 Current maintainer
+
+Matthew Newton C<< <mcnewton@cpan.org> >>
 
 
 =head2 Contributors
