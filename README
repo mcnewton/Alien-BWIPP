@@ -2,6 +2,8 @@
 
 Alien-BWIPP version 0.007 is Copyright © 2010, Lars Dɪᴇᴄᴋᴏᴡ
 
+Currently maintained by Matthew Newton C<< <mcnewton@cpan.org> >>
+
 =head1 NAME
 
 README - basic information for users prior to downloading
@@ -9,14 +11,14 @@ README - basic information for users prior to downloading
 
 =head1 INSTALLATION
 
-=head2 system-wide installation
+=head2 System-wide installation
 
     perl Build.PL
     ./Build
     ./Build test
     sudo ./Build install
 
-=head2 installation in a private directory
+=head2 Installation in a private directory
 
     perl Build.PL --install_base ~/modules_prefix
     ./Build
@@ -35,7 +37,7 @@ Perl 5.10, L<Module::Build> >= 0.35_14
 
 =head2 Run time
 
-=head3 core modules
+=head3 Core modules
 
 Perl 5.10, L<English>, L<IO::File>
 
