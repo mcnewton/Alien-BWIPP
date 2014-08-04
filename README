@@ -48,7 +48,7 @@ L<Moose>, L<MooseX::ClassAttribute>, L<Exception::Class>, L<File::ShareDir>
 
 =head2 F<barcode.ps>
 
-Barcode Writer in Pure PostScript - Version 2014-06-30-1
+Barcode Writer in Pure PostScript - Version 2014-07-30-1
 
 Copyright © 2004-2014 Terry Burton C<< <tez@terryburton.co.uk> >>
 

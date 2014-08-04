@@ -125,7 +125,7 @@ Alien::BWIPP - Barcode Writer in Pure PostScript
 =head1 VERSION
 
 This document describes C<Alien::BWIPP> version C<0.007>. It is based on
-I<Barcode Writer in Pure PostScript> version C<2014-06-30-1>.
+I<Barcode Writer in Pure PostScript> version C<2014-07-30-1>.
 
 
 =head1 SYNOPSIS
@@ -262,7 +262,7 @@ See file F<AUTHORS>.
 
 =head2 F<barcode.ps>
 
-Barcode Writer in Pure PostScript - Version 2014-06-30-1
+Barcode Writer in Pure PostScript - Version 2014-07-30-1
 
 Copyright © 2004-2014 Terry Burton C<< <tez@terryburton.co.uk> >>
 
